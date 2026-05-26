@@ -1,3 +1,3 @@
 PASSWORD: Waza_XD13
-GAMES FOR CLASS AND A TINY PROXY
-If need more, sey me
+                                                           GAMES FOR CLASS AND A TINY PROXY
+                                                           If need more, sey me
