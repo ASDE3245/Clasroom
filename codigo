@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- TAB SUPERIOR -->
+<title>Classroom</title>
+
+<link rel="icon"
+type="image/png"
+href="https://ssl.gstatic.com/classroom/favicon.png">
+
+<style>
+
+:root{
+    --bg-color:#0d1117;
+    --card-bg:#161b22;
+    --accent:#238636;
+    --text:#c9d1d9;
+    --border:#30363d;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:var(--bg-color);
+    color:var(--text);
+}
+
+/* FAKE GOOGLE HEADER */
+
+#google-header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+
+    height:56px;
+
+    background:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 20px;
+
+    border-bottom:1px solid #dadce0;
+
+    z-index:30000;
+}
+
+#google-left{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+#google-left img{
+    width:28px;
+    height:28px;
+}
+
+#google-left span{
+    color:#5f6368;
+    font-size:22px;
+}
+
+#google-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.google-dot{
+    width:8px;
+    height:8px;
+    background:#5f6368;
+    border-radius:50%;
+}
+
+.google-avatar{
+    width:34px;
+    height:34px;
+    background:#1a73e8;
+    border-radius:50%;
+}
+
+/* MAIN */
+
+.wrapper-centrado{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+    padding-top:80px;
+}
+
+.container{
+    width:100%;
+    max-width:480px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    padding:40px;
+    box-shadow:0 8px 24px rgba(0,0,0,.5);
+}
+
+h1{
+    margin:0 0 20px;
+    color:white;
+    font-size:24px;
+}
+
+p{
+    margin-bottom:25px;
+    color:#8b949e;
+    font-size:14px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:20px;
+    border:1px solid var(--border);
+    background:var(--bg-color);
+    color:white;
+    font-size:16px;
+    outline:none;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:var(--accent);
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#2ea043;
+}
+
+.btn-enlace{
+    display:block;
+    padding:12px;
+    margin-bottom:8px;
+    background:#21262d;
+    border:1px solid var(--border);
+    cursor:pointer;
+    user-select:none;
+    font-weight:bold;
+    color:#58a6ff;
+}
+
+.btn-enlace:hover{
+    background:#30363d;
+}
+
+/* IFRAME */
+
+#contenedor-iframe{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:black;
+    z-index:9999;
+}
+
+#iframe-pantalla{
+    width:100%;
+    height:100%;
+    border:none;
+}
+
+/* BOTONES */
+
+.btn-flotante{
+    position:fixed;
+    bottom:20px;
+
+    width:56px;
+    height:56px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#1f2937;
+    border:2px solid #3b4657;
+
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    z-index:10000;
+
+    transition:.15s;
+}
+
+.btn-flotante:hover{
+    background:#374151;
+    transform:scale(1.05);
+}
+
+#btn-back{
+    left:20px;
+}
+
+#btn-full{
+    right:20px;
+}
+
+/* CONFIG */
+
+#btn-config{
+    position:fixed;
+
+    top:70px;
+    right:15px;
+
+    width:42px;
+    height:42px;
+
+    background:#1f2937;
+    border:2px solid #3b4657;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+
+    z-index:20000;
+
+    color:white;
+    font-size:22px;
+}
+
+#panel-config{
+    position:fixed;
+
+    top:120px;
+    right:15px;
+
+    width:220px;
+
+    background:#161b22;
+    border:1px solid #30363d;
+
+    padding:15px;
+
+    display:none;
+
+    z-index:20000;
+}
+
+#panel-config button{
+    margin-bottom:10px;
+}
+
+/* MODO CLASE */
+
+.modo-clase{
+    --bg-color:#f1f3f4;
+    --card-bg:#ffffff;
+    --text:#202124;
+    --border:#dadce0;
+}
+
+.modo-clase .container{
+    box-shadow:none;
+}
+
+.modo-clase h1{
+    color:#202124;
+}
+
+.modo-clase p{
+    color:#5f6368;
+}
+
+.modo-clase .btn-enlace{
+    background:white;
+    color:#202124;
+}
+
+.modo-clase .btn-flotante{
+    opacity:.15;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- FAKE GOOGLE HEADER -->
+
+<div id="google-header">
+
+    <div id="google-left">
+
+        <img src="https://ssl.gstatic.com/classroom/favicon.png">
+
+        <span>Classroom</span>
+
+    </div>
+
+    <div id="google-right">
+
+        <div class="google-dot"></div>
+        <div class="google-dot"></div>
+        <div class="google-dot"></div>
+
+        <div class="google-avatar"></div>
+
+    </div>
+
+</div>
+
+<!-- CONFIG -->
+
+<div id="btn-config" onclick="toggleConfig()">
+⚙
+</div>
+
+<div id="panel-config">
+
+    <button onclick="activarModoClase()">
+        Activar modo clase
+    </button>
+
+    <button onclick="desactivarModoClase()">
+        Desactivar
+    </button>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="wrapper-centrado" id="vista-interfaz">
+
+    <div class="container">
+
+        <!-- LOGIN -->
+
+        <div id="bloque-login">
+
+            <h1>Google Classroom</h1>
+
+            <p>
+                Inicia sesión para acceder a tus clases.
+            </p>
+
+            <input
+                type="password"
+                id="inputPassword"
+                placeholder="Contraseña"
+            >
+
+            <button onclick="verificarContrasena()">
+                Iniciar sesión
+            </button>
+
+        </div>
+
+        <!-- MENU -->
+
+        <div id="menu-paginas" style="display:none;">
+
+            <h1>Panel principal</h1>
+
+            <p>Selecciona una opción:</p>
+
+            <div onclick="cargarContenido('https://mahjong-solitaire.netlify.app')" class="btn-enlace">
+                Mahjong
+            </div>
+
+            <div onclick="cargarContenido('https://ovo23245.netlify.app')" class="btn-enlace">
+                OvO2
+            </div>
+
+            <div onclick="cargarContenido('https://clever-sable-96367b.netlify.app/')" class="btn-enlace">
+                Geometry Dash
+            </div>
+
+            <div onclick="cargarContenido('https://fnf3245.oneapp.dev')" class="btn-enlace">
+                FNF
+            </div>
+
+            <div onclick="cargarContenido('https://fireboyandwatergirl3245.netlify.app')" class="btn-enlace">
+                Fireboy and Watergirl
+            </div>
+
+            <div onclick="cargarContenido('https://serene-souffle-b377c7.netlify.app')" class="btn-enlace">
+                Cookie Clicker
+            </div>
+
+            <div onclick="cargarContenido('https://azure-ilyssa-19.tiiny.site/?mode=suggestions')" class="btn-enlace">
+                Drive Mad
+            </div>
+
+            <div onclick="cargarContenido('https://minecra13.netlify.app')" class="btn-enlace">
+                Minecraft
+            </div>
+
+            <div
+                onclick="mostrarPanelNavegacion()"
+                class="btn-enlace"
+                style="color:#ff58b6;"
+            >
+                🌐 Navegación Manual
+            </div>
+
+        </div>
+
+        <!-- NAVEGADOR -->
+
+        <div id="bloque-navegacion-inputs" style="display:none;">
+
+            <h1>Navegación</h1>
+
+            <input
+                type="text"
+                id="inputNavegacionUrl"
+                value="https://"
+            >
+
+            <button onclick="procesarNavegacion()">
+                Cargar URL
+            </button>
+
+            <button
+                onclick="volverAlMenu()"
+                style="background:#30363d;margin-top:10px;"
+            >
+                Atrás
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- IFRAME -->
+
+<div id="contenedor-iframe">
+
+    <div
+        class="btn-flotante"
+        id="btn-back"
+        onclick="cerrarContenido()"
+    >
+        ←
+    </div>
+
+    <div
+        class="btn-flotante"
+        id="btn-full"
+        onclick="alternarFullscreen()"
+    >
+        ⛶
+    </div>
+
+    <iframe id="iframe-pantalla"></iframe>
+
+</div>
+
+<script>
+
+/* LOGIN */
+
+document
+.getElementById("inputPassword")
+.addEventListener("keydown",function(e){
+
+    if(e.key==="Enter"){
+        verificarContrasena();
+    }
+
+});
+
+function verificarContrasena(){
+
+    if(
+        document.getElementById("inputPassword").value
+        ===
+        "Waza_XD13"
+    ){
+
+        document.getElementById("bloque-login").style.display="none";
+
+        document.getElementById("menu-paginas").style.display="block";
+
+    }else{
+
+        alert("Contraseña incorrecta");
+
+    }
+
+}
+
+/* LOAD */
+
+function cargarContenido(url){
+
+    document.getElementById("iframe-pantalla").src=url;
+
+    document.getElementById("vista-interfaz").style.display="none";
+
+    document.getElementById("contenedor-iframe").style.display="block";
+
+}
+
+/* CLOSE */
+
+function cerrarContenido(){
+
+    document.getElementById("iframe-pantalla").src="";
+
+    document.getElementById("contenedor-iframe").style.display="none";
+
+    document.getElementById("vista-interfaz").style.display="flex";
+
+    if(document.fullscreenElement){
+        document.exitFullscreen();
+    }
+
+}
+
+/* FULLSCREEN */
+
+function alternarFullscreen(){
+
+    const contenedor =
+        document.getElementById("contenedor-iframe");
+
+    if(!document.fullscreenElement){
+
+        contenedor.requestFullscreen();
+
+    }else{
+
+        document.exitFullscreen();
+
+    }
+
+}
+
+/* CONFIG */
+
+function toggleConfig(){
+
+    const panel =
+        document.getElementById("panel-config");
+
+    panel.style.display =
+        panel.style.display==="block"
+        ? "none"
+        : "block";
+
+}
+
+/* CLASS MODE */
+
+function activarModoClase(){
+
+    document.body.classList.add("modo-clase");
+
+}
+
+function desactivarModoClase(){
+
+    document.body.classList.remove("modo-clase");
+
+}
+
+/* NAVEGADOR */
+
+function mostrarPanelNavegacion(){
+
+    document.getElementById("menu-paginas").style.display="none";
+
+    document.getElementById("bloque-navegacion-inputs").style.display="block";
+
+}
+
+function volverAlMenu(){
+
+    document.getElementById("bloque-navegacion-inputs").style.display="none";
+
+    document.getElementById("menu-paginas").style.display="block";
+
+}
+
+function procesarNavegacion(){
+
+    cargarContenido(
+        document.getElementById("inputNavegacionUrl").value
+    );
+
+}
+
+/* PANIC BUTTON */
+
+let ultimaTeclaM=0;
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key==="m"||e.key==="M"){
+
+        const ahora=new Date().getTime();
+
+        if(ahora-ultimaTeclaM<2000){
+
+            window.location.href =
+            "https://classroom.google.com/h";
+
+        }
+
+        ultimaTeclaM=ahora;
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
